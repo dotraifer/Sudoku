@@ -24,12 +24,12 @@ namespace Sudoku
                 throw (new UnpossibleBoardSizeExeption("cant make a board out of " + values.Length + " numbers"));
             else
             {
-                int face = (int)Math.Sqrt(values.Length);
-                int[,] grid = new int[face, face];
+                Globals._boardSize = (int)Math.Sqrt(values.Length);
+                int[,] grid = new int[Globals._boardSize, Globals._boardSize];
                 int arr_counter = 0;
-                for (int i = 0; i < face; i++)
+                for (int i = 0; i < Globals._boardSize; i++)
                 {
-                    for (int j = 0; j < face; j++)
+                    for (int j = 0; j < Globals._boardSize; j++)
                     {
                         grid[i, j] = values[arr_counter];
                         arr_counter++;

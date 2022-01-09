@@ -9,10 +9,10 @@ namespace Sudoku
         internal Cell[,] Cells { get; set; }
         public void ResetBoard(int[,] matrix)
         {
-            Cells = new Cell[matrix.GetLength(0), matrix.GetLength(1)];
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            Cells = new Cell[Globals._boardSize, Globals._boardSize];
+            for (int i = 0; i < Globals._boardSize; i++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = 0; j < Globals._boardSize; j++)
                 {
                     if (matrix[i, j] != 0)
                         Cells[i, j] = new Cell(matrix[i, j], true);

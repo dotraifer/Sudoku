@@ -22,10 +22,11 @@ namespace Sudoku
         }
         public static int[,] MakeCellToMartrix(Board board)
         {
+            // convert the cells matrix to int matrix of values
             int[,] matrix = new int[board.Cells.GetLength(0), board.Cells.GetLength(1)];
-            for (int i = 0; i < board.Cells.GetLength(0); i++)
+            for (int i = 0; i < Globals._boardSize; i++)
             {
-                for (int j = 0; j < board.Cells.GetLength(1); j++)
+                for (int j = 0; j < Globals._boardSize; j++)
                 {
                     matrix[i, j] = board.Cells[i, j].value;
                 }
