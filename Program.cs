@@ -16,22 +16,20 @@ namespace Sudoku
         }
         public static int[,] Solve(string board_string)
         {
-            int[,] matrix;
-            Game game = new Game(board_string);
-            return MakeCellToMartrix(game._board);
-        }
-        public static int[,] MakeCellToMartrix(Board board)
-        {
-            // convert the cells matrix to int matrix of values
-            int[,] matrix = new int[board.Cells.GetLength(0), board.Cells.GetLength(1)];
-            for (int i = 0; i < Globals._boardSize; i++)
+            try
             {
-                for (int j = 0; j < Globals._boardSize; j++)
-                {
-                    matrix[i, j] = board.Cells[i, j].value;
-                }
+                Game game = new Game(board_string);
+                return game.SolveBoard();
             }
-            return matrix;
+            catch(UnpossibleBoardSizeExeption e)
+            {
+                Console.WriteLine(e);
+            }
+            catch(InvalidCharException e)
+            {
+                Console.WriteLine(e);
+            }
+            return null;
         }
     }
 }

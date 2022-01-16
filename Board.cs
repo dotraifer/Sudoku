@@ -6,20 +6,79 @@ namespace Sudoku
 {
     class Board
     {
-        internal Cell[,] Cells { get; set; }
-        public void ResetBoard(int[,] matrix)
+        private int[,] _cells;
+        public Board(int[,] cells)
         {
-            Cells = new Cell[Globals._boardSize, Globals._boardSize];
+            this._cells = cells;
+        }
+        public int[,] GetCells()
+        {
+            return _cells;
+        }
+        public void SetCells(int[,]cells)
+        {
+            this._cells = cells;
+        }
+        public bool SolveBoard(int[,] board)
+        {
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 for (int j = 0; j < Globals._boardSize; j++)
                 {
-                    if (matrix[i, j] != 0)
-                        Cells[i, j] = new Cell(matrix[i, j], true);
-                    else
-                        Cells[i, j] = new Cell(0, false);
+                    if (board[i, j] == 0)
+                    {
+                        for (int possibleNum = 1; possibleNum <= Globals._boardSize; possibleNum++)
+                        {
+                            if (IsValid(board, i, j, possibleNum))
+                            {
+                                board[i, j] = possibleNum;
+
+                                if (SolveBoard(board))
+                                    return true;
+                                else
+                                    board[i, j] = 0;
+                            }
+                        }
+                        return false;
+                    }
                 }
             }
+            _cells = board;
+            return true;
+        }
+        public bool IsValid(int[,] board, int row, int col, int number)
+        {
+            for (int i = 0; i < Globals._boardSize; i++)
+            {
+                //check row  
+                if (board[i, col] != 0 && board[i, col] == number)
+                    return false;
+                //check column  
+                if (board[row, i] != 0 && board[row, i] == number)
+                    return false;
+                //check smaller box block  
+                if (!IsSmallBoxValid(board, row, col, number))
+                    return false;
+            }
+            return true;
+        }
+        public bool IsSmallBoxValid(int[,] board, int row, int col,int number)
+        {
+            // 010040050407000602820600074000010500500000003004050000960003045305000801070020030
+            // 000260701680070090190004500820100040004602900050003028009300074040050036703018000
+            int smallBoxSize = (int)Math.Sqrt(Globals._boardSize);
+            int firstBoxRow = row - row % smallBoxSize;
+            int firstBoxColumn = col - col % smallBoxSize;
+            for(int i = firstBoxRow;i < smallBoxSize;i++)
+            {
+                for (int j = firstBoxColumn; j < smallBoxSize; j++)
+                {
+                    if (board[i, j] == number)
+                        return false;
+                }
+            }
+            return true;
+
         }
     }
 }

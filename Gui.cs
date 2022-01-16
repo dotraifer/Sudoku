@@ -8,9 +8,9 @@ namespace Sudoku
     {
         public static void PrintBoard(int[,] board)
         {
-            for (int i = 0; i < board.GetLength(0); i++)
+            for (int i = 0; i < Globals._boardSize; i++)
             {
-                for (int j = 0; j < board.GetLength(1); j++)
+                for (int j = 0; j < Globals._boardSize; j++)
                 {
                     Console.Write(board[i, j]);
                 }
