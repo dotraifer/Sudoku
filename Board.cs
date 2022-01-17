@@ -57,9 +57,9 @@ namespace Sudoku
                 if (board[row, i] != 0 && board[row, i] == number)
                     return false;
                 //check smaller box block  
-                if (!IsSmallBoxValid(board, row, col, number))
-                    return false;
             }
+            if (!IsSmallBoxValid(board, row, col, number))
+                return false;
             return true;
         }
         public bool IsSmallBoxValid(int[,] board, int row, int col,int number)
@@ -69,9 +69,9 @@ namespace Sudoku
             int smallBoxSize = (int)Math.Sqrt(Globals._boardSize);
             int firstBoxRow = row - row % smallBoxSize;
             int firstBoxColumn = col - col % smallBoxSize;
-            for(int i = firstBoxRow;i < smallBoxSize;i++)
+            for(int i = firstBoxRow;i < firstBoxRow + smallBoxSize;i++)
             {
-                for (int j = firstBoxColumn; j < smallBoxSize; j++)
+                for (int j = firstBoxColumn; j < firstBoxColumn + smallBoxSize; j++)
                 {
                     if (board[i, j] == number)
                         return false;

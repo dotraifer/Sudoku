@@ -12,7 +12,7 @@ namespace Sudoku
             {
                 for (int j = 0; j < Globals._boardSize; j++)
                 {
-                    Console.Write(board[i, j]);
+                    Console.Write(board[i, j] + " ");
                 }
                 Console.WriteLine();
             }

@@ -79,7 +79,7 @@ namespace Sudoku
             for(int i = 0;i < values.Length;i++)
             {
                 // convert to int
-                int value = (int)ascii_list[i] - 48;
+                int value = (int)ascii_list[i] - '0';
                 // if out of range
                 if (value < 0 || value > Math.Sqrt(ascii_list.Length))
                     throw (new InvalidCharException("The char " + ascii_list[i] + " is illegal"));
@@ -92,7 +92,9 @@ namespace Sudoku
         public int[,] SolveBoard()
         {
             int[,] cells = _board.GetCells();
-            _board.SolveBoard(cells);
+            bool isSuccesful = _board.SolveBoard(cells);
+            if (!isSuccesful)
+                throw (new InsolubleBoardException(""));
             return _board.GetCells();
         }
     }

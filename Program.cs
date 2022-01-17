@@ -11,7 +11,8 @@ namespace Sudoku
                 Console.WriteLine("~enter a string that would represent the _board you want to solve~");
                 String board_string = Console.ReadLine();
                 int [,] result_board = Solve(board_string);
-                Gui.PrintBoard(result_board);
+                if(result_board != null)
+                    Gui.PrintBoard(result_board);
             }
         }
         public static int[,] Solve(string board_string)
@@ -28,6 +29,14 @@ namespace Sudoku
             catch(InvalidCharException e)
             {
                 Console.WriteLine(e);
+            }
+            catch(InsolubleBoardException e)
+            {
+                Console.WriteLine(e);
+            }
+            catch (DivideByZeroException e)
+            {
+                Console.WriteLine("board can't be empty!");
             }
             return null;
         }
