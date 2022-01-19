@@ -35,7 +35,7 @@ namespace Sudoku
         /// <returns>grid - the board as a matrix of integers </returns>
         public int[,] BuildGrid(int[] values)
         {
-            if (Math.Sqrt(Math.Sqrt(values.Length)) % 1 != 0) 
+            if (Math.Sqrt(Math.Sqrt(values.Length)) % 1 != 0)
                 throw (new UnpossibleBoardSizeExeption("cant make a board out of " + values.Length + " numbers"));
             else
             {
@@ -52,7 +52,7 @@ namespace Sudoku
                 }
                 return grid;
             }
-            
+
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Sudoku
         public int[] GetValues(char[] ascii_list)
         {
             int[] values = new int[ascii_list.Length];
-            for(int i = 0;i < values.Length;i++)
+            for (int i = 0; i < values.Length; i++)
             {
                 // convert to int
                 int value = (int)ascii_list[i] - '0';
@@ -89,13 +89,26 @@ namespace Sudoku
             return values;
         }
 
-        public int[,] SolveBoard()
+        public string SolveBoard()
         {
             int[,] cells = _board.GetCells();
             bool isSuccesful = _board.SolveBoard(cells);
             if (!isSuccesful)
                 throw (new InsolubleBoardException(""));
-            return _board.GetCells();
+            return returnToArray(_board.GetCells());
         }
+        public string returnToArray(int[,] grid)
+        {
+            string result = "";
+            for (int i = 0; i < Globals._boardSize; i++)
+            {
+                for (int j = 0; j < Globals._boardSize; j++)
+                {
+                    result += grid[i, j];
+                }
+            }
+            return result;
+        }
+
     }
 }

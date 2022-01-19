@@ -6,16 +6,17 @@ namespace Sudoku
 {
     public static class Gui
     {
-        public static void PrintBoard(int[,] board)
+        public static void PrintBoard(string board)
         {
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 for (int j = 0; j < Globals._boardSize; j++)
                 {
-                    Console.Write(board[i, j] + " ");
+                    Console.Write(board[Globals._boardSize * i + j] + " ");
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine();
         }
     }
 }

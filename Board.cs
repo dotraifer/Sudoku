@@ -15,7 +15,7 @@ namespace Sudoku
         {
             return _cells;
         }
-        public void SetCells(int[,]cells)
+        public void SetCells(int[,] cells)
         {
             this._cells = cells;
         }
@@ -62,14 +62,14 @@ namespace Sudoku
                 return false;
             return true;
         }
-        public bool IsSmallBoxValid(int[,] board, int row, int col,int number)
+        public bool IsSmallBoxValid(int[,] board, int row, int col, int number)
         {
             // 010040050407000602820600074000010500500000003004050000960003045305000801070020030
             // 000260701680070090190004500820100040004602900050003028009300074040050036703018000
             int smallBoxSize = (int)Math.Sqrt(Globals._boardSize);
             int firstBoxRow = row - row % smallBoxSize;
             int firstBoxColumn = col - col % smallBoxSize;
-            for(int i = firstBoxRow;i < firstBoxRow + smallBoxSize;i++)
+            for (int i = firstBoxRow; i < firstBoxRow + smallBoxSize; i++)
             {
                 for (int j = firstBoxColumn; j < firstBoxColumn + smallBoxSize; j++)
                 {

@@ -6,31 +6,32 @@ namespace Sudoku
     {
         static void Main(string[] args)
         {
-            while(true)
+            while (true)
             {
                 Console.WriteLine("~enter a string that would represent the _board you want to solve~");
-                String board_string = Console.ReadLine();
-                int [,] result_board = Solve(board_string);
-                if(result_board != null)
+                string board_string = Console.ReadLine();
+                string result_board = Solve(board_string);
+                Gui.PrintBoard(board_string);
+                if (result_board != null)
                     Gui.PrintBoard(result_board);
             }
         }
-        public static int[,] Solve(string board_string)
+        public static string Solve(string board_string)
         {
             try
             {
                 Game game = new Game(board_string);
                 return game.SolveBoard();
             }
-            catch(UnpossibleBoardSizeExeption e)
+            catch (UnpossibleBoardSizeExeption e)
             {
                 Console.WriteLine(e);
             }
-            catch(InvalidCharException e)
+            catch (InvalidCharException e)
             {
                 Console.WriteLine(e);
             }
-            catch(InsolubleBoardException e)
+            catch (InsolubleBoardException e)
             {
                 Console.WriteLine(e);
             }

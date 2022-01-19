@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sudoku
 {
-    public class UnpossibleBoardSizeExeption : Exception 
+    public class UnpossibleBoardSizeExeption : Exception
     {
         public UnpossibleBoardSizeExeption(String massage) : base(massage) { }
     }
