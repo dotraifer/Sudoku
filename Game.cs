@@ -95,18 +95,19 @@ namespace Sudoku
             bool isSuccesful = _board.SolveBoard(cells);
             if (!isSuccesful)
                 throw (new InsolubleBoardException(""));
-            return returnToArray(_board.GetCells());
+            return ReturnToArray(_board.GetCells());
         }
-        public string returnToArray(int[,] grid)
+        public string ReturnToArray(int[,] grid)
         {
             string result = "";
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 for (int j = 0; j < Globals._boardSize; j++)
                 {
-                    result += grid[i, j];
+                    result += (char)(grid[i, j] + 48);
                 }
             }
+            Console.WriteLine(result);
             return result;
         }
 
