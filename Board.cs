@@ -19,8 +19,20 @@ namespace Sudoku
         {
             this._cells = cells;
         }
-        public bool SolveBoard(int[,] board)
+        public bool isBoardValid(int[,] board)
         {
+            for (int i = 0; i < Globals._boardSize; i++)
+            {
+                for (int j = 0; j < Globals._boardSize; j++)
+                {
+                    if (board[i, j] != 0 && !IsValid(board, i, j, board[i, j]))
+                        return false;
+                }
+            }
+            return true;  
+        }
+        public bool SolveBoard(int[,] board)
+        { 
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 for (int j = 0; j < Globals._boardSize; j++)
@@ -51,10 +63,10 @@ namespace Sudoku
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 //check row  
-                if (board[i, col] != 0 && board[i, col] == number)
+                if (board[i, col] != 0 && i != row&& board[i, col] == number)
                     return false;
                 //check column  
-                if (board[row, i] != 0 && board[row, i] == number)
+                if (board[row, i] != 0 && i != col && board[row, i] == number)
                     return false;
                 //check smaller box block  
             }
@@ -73,7 +85,7 @@ namespace Sudoku
             {
                 for (int j = firstBoxColumn; j < firstBoxColumn + smallBoxSize; j++)
                 {
-                    if (board[i, j] == number)
+                    if (board[i, j] == number && !(i == row && j == col))
                         return false;
                 }
             }

@@ -10,22 +10,10 @@ namespace Sudoku
         public Game(string board_string)
         {
             // make the string to a metrix, to board
-            _board = new Board(GetMatrix(board_string));
+            _board = new Board(BuildGrid(board_string));
         }
         public Board GetBoard() { return _board; }
         public void SetBoard(Board board) { this._board = board; }
-
-        /// <summary>
-        /// this function take the string that represents the board, and return it as a matrix(int[,]) after converting asciis.
-        /// </summary>
-        /// <param name="board_string">the string that represents the sudoku</param>
-        /// <returns>grid - the board as a matrix of integers</returns>
-        public int[,] GetMatrix(string board_string)
-        {
-
-            int[] asciis = GetAsciiValues(board_string);
-            return BuildGrid(asciis);
-        }
 
         /// <summary>
         /// this function checks if we got a legal size of string, and return the matrix that represent the board
@@ -33,20 +21,20 @@ namespace Sudoku
         /// <param name="values">a 1D array of integers that reapreasent the board</param>
         /// <exception cref="UnpossibleBoardSizeExeption">will throw if we got illegal board size</exception>
         /// <returns>grid - the board as a matrix of integers </returns>
-        public int[,] BuildGrid(int[] values)
+        public int[,] BuildGrid(string board_string)
         {
-            if (Math.Sqrt(Math.Sqrt(values.Length)) % 1 != 0)
-                throw (new UnpossibleBoardSizeExeption("cant make a board out of " + values.Length + " numbers"));
+            if (Math.Sqrt(Math.Sqrt(board_string.Length)) % 1 != 0)
+                throw (new UnpossibleBoardSizeExeption("cant make a board out of " + board_string.Length + " numbers"));
             else
             {
-                Globals._boardSize = (int)Math.Sqrt(values.Length);
+                Globals._boardSize = (int)Math.Sqrt(board_string.Length);
                 int[,] grid = new int[Globals._boardSize, Globals._boardSize];
                 int arr_counter = 0;
                 for (int i = 0; i < Globals._boardSize; i++)
                 {
                     for (int j = 0; j < Globals._boardSize; j++)
                     {
-                        grid[i, j] = values[arr_counter];
+                        grid[i, j] = (int)(board_string[arr_counter] - '0');
                         arr_counter++;
                     }
                 }
@@ -55,46 +43,12 @@ namespace Sudoku
 
         }
 
-        /// <summary>
-        /// this function take a string, make it an array, and then convert the chars to their value as integers
-        /// </summary>
-        /// <param name="board_string"> the string that represent the board</param>
-        /// <returns>array of integers that represents the board</returns>
-        public int[] GetAsciiValues(string board_string)
-        {
-            // make an array
-            char[] chars = board_string.ToCharArray();
-            return GetValues(chars);
-        }
-
-        /// <summary>
-        /// this function go over the array, and convert every char to his integer value
-        /// </summary>
-        /// <param name="ascii_list"> array of chars that reprsent the board</param>
-        /// <exception cref="InvalidCharException">will throw if a char in the string is out of our sudoku range</exception>
-        /// <returns>array of integers that represent the board</returns>
-        public int[] GetValues(char[] ascii_list)
-        {
-            int[] values = new int[ascii_list.Length];
-            for (int i = 0; i < values.Length; i++)
-            {
-                // convert to int
-                int value = (int)ascii_list[i] - '0';
-                // if out of range
-                if (value < 0 || value > Math.Sqrt(ascii_list.Length))
-                    throw (new InvalidCharException("The char " + ascii_list[i] + " is illegal"));
-                else
-                    values[i] = value;
-            }
-            return values;
-        }
-
         public string SolveBoard()
         {
             int[,] cells = _board.GetCells();
-            bool isSuccesful = _board.SolveBoard(cells);
-            if (!isSuccesful)
-                throw (new InsolubleBoardException(""));
+            
+            if (!_board.SolveBoard(cells) || !_board.isBoardValid(cells))
+                throw (new InsolubleBoardException("board is Insoluble"));
             return ReturnToArray(_board.GetCells());
         }
         public string ReturnToArray(int[,] grid)

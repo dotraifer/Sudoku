@@ -11,10 +11,12 @@ namespace Sudoku
                 Console.WriteLine("~enter a string that would represent the _board you want to solve~");
                 string board_string = Console.ReadLine();
                 string result_board = Solve(board_string);
-                Console.WriteLine(result_board);
-                Gui.PrintBoard(board_string);
                 if (result_board != null)
+                {
+                    Gui.PrintBoard(board_string);
                     Gui.PrintBoard(result_board);
+                }
+
             }
         }
         public static string Solve(string board_string)
