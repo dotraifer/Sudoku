@@ -34,8 +34,14 @@ namespace Sudoku
                 {
                     for (int j = 0; j < Globals._boardSize; j++)
                     {
-                        grid[i, j] = (int)(board_string[arr_counter] - '0');
-                        arr_counter++;
+                        int value = (int)(board_string[arr_counter] - '0');
+                        if (value < 0 || value > Math.Sqrt(Globals._boardSize))
+                            throw (new InvalidCharException("the char " + board_string[arr_counter] + " is illegal"));
+                        else
+                        {
+                            grid[i, j] = value;
+                            arr_counter++;
+                        }
                     }
                 }
                 return grid;
