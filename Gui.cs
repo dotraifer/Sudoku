@@ -23,5 +23,12 @@ namespace Sudoku
             }
             Console.WriteLine();
         }
+        public static void PrintManu()
+        {
+            Console.WriteLine("\n*Welcome to the sudoku solver*");
+            Console.WriteLine("- to enter board throught the console - enter the word console");
+            Console.WriteLine("- to enter board throught the file - enter the word file");
+            Console.WriteLine("- to exit the sudoku solver - enter the word exit");
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace Sudoku
         /// <returns>grid - the board as a matrix of integers </returns>
         public int[,] BuildGrid(string board_string)
         {
-            if (Math.Sqrt(Math.Sqrt(board_string.Length)) % 1 != 0)
+            if (board_string.Length == 0 || Math.Sqrt(Math.Sqrt(board_string.Length)) % 1 != 0)
                 throw (new UnpossibleBoardSizeExeption("cant make a board out of " + board_string.Length + " numbers"));
             else
             {
