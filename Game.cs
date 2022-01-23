@@ -18,7 +18,7 @@ namespace Sudoku
         /// <summary>
         /// this function checks if we got a legal size of string, and return the matrix that represent the board
         /// </summary>
-        /// <param name="values">a 1D array of integers that reapreasent the board</param>
+        /// <param name="board_strin_string">a string that reapreasent the board</param>
         /// <exception cref="UnpossibleBoardSizeExeption">will throw if we got illegal board size</exception>
         /// <returns>grid - the board as a matrix of integers </returns>
         public int[,] BuildGrid(string board_string)
@@ -35,7 +35,7 @@ namespace Sudoku
                     for (int j = 0; j < Globals._boardSize; j++)
                     {
                         int value = (int)(board_string[arr_counter] - '0');
-                        if (value < 0 || value > Math.Sqrt(Globals._boardSize))
+                        if (value < 0 || value > Globals._boardSize)
                             throw (new InvalidCharException("the char " + board_string[arr_counter] + " is illegal"));
                         else
                         {

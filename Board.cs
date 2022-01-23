@@ -39,6 +39,7 @@ namespace Sudoku
                 {
                     if (board[i, j] == 0)
                     {
+                        Console.WriteLine(i + ", " + j);
                         for (int possibleNum = 1; possibleNum <= Globals._boardSize; possibleNum++)
                         {
                             if (IsValid(board, i, j, possibleNum))
