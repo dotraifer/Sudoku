@@ -66,7 +66,6 @@ namespace Sudoku
                     result += (char)(grid[i, j] + 48);
                 }
             }
-            Console.WriteLine(result);
             return result;
         }
 
