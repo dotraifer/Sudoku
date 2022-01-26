@@ -12,6 +12,7 @@ namespace Sudoku
             int board_counter = 0;
             for (int i = 0; i < Globals._boardSize; i++)
             {
+                //
                 PrintUpperBorder();
                 PrintEmptyRow();
                 PrintNumbersRow(board, ref board_counter);
