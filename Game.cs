@@ -51,12 +51,11 @@ namespace Sudoku
 
         public string SolveBoard()
         {
-            int[,] cells = _board.GetCells();
-            
-            if (!_board.SolveBoard(cells) || !_board.isBoardValid(cells))
+            if (!_board.SolveBoard() || !_board.IsBoardValid())
                 throw (new InsolubleBoardException("board is Insoluble"));
             return ReturnToArray(_board.GetCells());
         }
+
         public string ReturnToArray(int[,] grid)
         {
             string result = "";
