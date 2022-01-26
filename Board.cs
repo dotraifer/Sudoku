@@ -19,44 +19,42 @@ namespace Sudoku
         {
             this._cells = cells;
         }
-        public bool isBoardValid(int[,] board)
+        public bool IsBoardValid()
         {
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 for (int j = 0; j < Globals._boardSize; j++)
                 {
-                    if (board[i, j] != 0 && !IsValid(board, i, j, board[i, j]))
+                    if (_cells[i, j] != 0 && !IsValid(_cells, i, j, _cells[i, j]))
                         return false;
                 }
             }
             return true;  
         }
-        public bool SolveBoard(int[,] board)
+        public bool SolveBoard()
         { 
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 for (int j = 0; j < Globals._boardSize; j++)
                 {
-                    if (board[i, j] == 0)
+                    if (_cells[i, j] == 0)
                     {
-                        Console.WriteLine(i + ", " + j);
                         for (int possibleNum = 1; possibleNum <= Globals._boardSize; possibleNum++)
                         {
-                            if (IsValid(board, i, j, possibleNum))
+                            if (IsValid(_cells, i, j, possibleNum))
                             {
-                                board[i, j] = possibleNum;
+                                _cells[i, j] = possibleNum;
 
-                                if (SolveBoard(board))
+                                if (SolveBoard())
                                     return true;
                                 else
-                                    board[i, j] = 0;
+                                    _cells[i, j] = 0;
                             }
                         }
                         return false;
                     }
                 }
             }
-            _cells = board;
             return true;
         }
         public bool IsValid(int[,] board, int row, int col, int number)

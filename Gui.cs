@@ -8,20 +8,67 @@ namespace Sudoku
     {
         public static void PrintBoard(string board)
         {
+            CalcMaximumSize();
+            int board_counter = 0;
             for (int i = 0; i < Globals._boardSize; i++)
             {
-                for (int k = 0; k < Globals._boardSize * 4; k++)
+                PrintUpperBorder();
+                PrintEmptyRow();
+                PrintNumbersRow(board, ref board_counter);
+                PrintEmptyRow();
+            }
+            PrintUpperBorder();
+            Console.WriteLine();
+
+
+        }
+        public static void PrintNumbersRow(string board, ref int board_counter)
+        {
+            for (int k = 0; k <= Globals._boardSize * 6; k++)
+            {
+                if (k % 6 == 0)
+                    Console.Write("|");
+                else if ((k + 3) % 6 == 0)
                 {
-                    Console.Write("_");
+                    Console.Write((int)(board[board_counter] - 48));
+                    for (int j = 0; j < Globals._biggestNumberSize - (int)(board[board_counter] - 48).ToString().Length; j++)
+                        Console.Write(" ");
+                    board_counter++;
                 }
-                Console.WriteLine();
-                for (int j = 0; j < Globals._boardSize; j++)
-                {
-                    Console.Write(String.Format((int)(board[Globals._boardSize * i + j] - 48) + " " + "| "));
-                }
-                Console.WriteLine();
+                else
+                    Console.Write(" ");
             }
             Console.WriteLine();
+        }
+        public static void PrintUpperBorder()
+        {
+            for (int k = 0; k <= Globals._boardSize * 6; k++)
+            {
+                if ((k + 3) % 6 == 0)
+                    for (int i = 0; i < Globals._biggestNumberSize; i++)
+                        Console.Write("-");
+                else
+                    Console.Write("-");
+            }
+            Console.WriteLine();
+        }
+        public static void PrintEmptyRow()
+        {
+            for (int k = 0; k <= Globals._boardSize * 6; k++)
+            {
+                if (k % 6 == 0)
+                    Console.Write("|");
+                else if ((k + 3) % 6 == 0)
+                    for (int i = 0; i < Globals._biggestNumberSize; i++)
+                        Console.Write(" ");
+                else
+                    Console.Write(" ");
+            }
+            Console.WriteLine();
+        }
+        public static void CalcMaximumSize()
+        {
+            Globals._biggestNumberSize = Globals._boardSize.ToString().Length;
         }
         public static void PrintManu()
         {

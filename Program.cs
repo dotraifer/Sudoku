@@ -7,12 +7,13 @@ namespace Sudoku
     {
         static void Main(string[] args)
         {
-            string board_string = null;
+            string board_string;
             while (true)
             {
+                board_string = null;
                 Gui.PrintManu();
                 string manuChoose = Console.ReadLine();
-                manuChoose.ToLower();
+                manuChoose = manuChoose.ToLower();
                 switch (manuChoose)
                 {
                     case "console":
@@ -29,13 +30,13 @@ namespace Sudoku
                         break;
 
                 }
-                string result_board = Solve(board_string);
+                string result_board = Solver.Solve(board_string);
+                // TODO : clean the main
                 if (result_board != null)
                 {
                     Gui.PrintBoard(board_string);
                     Gui.PrintBoard(result_board);
                 }
-
             }
         }
         public static string ReadFromFile()
@@ -60,33 +61,6 @@ namespace Sudoku
             catch (Exception e)
             {
                 Console.WriteLine("unknown problem with file opening\n" + e);
-            }
-            return null;
-        }
-        public static string Solve(string board_string)
-        {
-            if (board_string == null)
-                return null;
-            try
-            {
-                Game game = new Game(board_string);
-                return game.SolveBoard();
-            }
-            catch (UnpossibleBoardSizeExeption e)
-            {
-                Console.WriteLine(e);
-            }
-            catch (InvalidCharException e)
-            {
-                Console.WriteLine(e);
-            }
-            catch (InsolubleBoardException e)
-            {
-                Console.WriteLine(e);
-            }
-            catch (DivideByZeroException e)
-            {
-                Console.WriteLine("board can't be empty!");
             }
             return null;
         }
