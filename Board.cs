@@ -32,7 +32,19 @@ namespace Sudoku
             return true;  
         }
         public bool SolveBoard()
-        { 
+        {
+            bool has_changed = true;
+            while (has_changed)
+            {
+                printmatrix(_cells);
+                Console.WriteLine();
+                has_changed =  FindOnlyPossibility();
+                printmatrix(_cells);
+            }
+            return backtracking();
+        }
+        public bool backtracking()
+        {
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 for (int j = 0; j < Globals._boardSize; j++)
@@ -45,7 +57,7 @@ namespace Sudoku
                             {
                                 _cells[i, j] = possibleNum;
 
-                                if (SolveBoard())
+                                if (backtracking())
                                     return true;
                                 else
                                     _cells[i, j] = 0;
@@ -56,6 +68,66 @@ namespace Sudoku
                 }
             }
             return true;
+        }
+        public bool FindOnlyPossibility()
+        {
+            bool has_changed = false;
+            for (int i = 0; i < Globals._boardSize; i++)
+            {
+                for (int j = 0; j < Globals._boardSize; j++)
+                {
+                    if(_cells[i,j] == 0)
+                    {
+                        for (int gussed_number = 1; gussed_number <= Globals._boardSize; gussed_number++)
+                        {
+                            if(IsValid(_cells, i, j, gussed_number) && DoesOnlyPossible(_cells, i , j, gussed_number))
+                            {
+                                _cells[i, j] = gussed_number;
+                                has_changed = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return has_changed;
+        }
+        public bool DoesOnlyPossible(int[,] board ,int row, int col, int gussed_number)
+        {
+            bool breakLoops = false;
+            bool rowFlag = true;
+            bool colFlg = true;
+            bool smallBoxFlag = true;
+            int smallBoxSize = (int)Math.Sqrt(Globals._boardSize);
+            int firstBoxRow = row - row % smallBoxSize;
+            int firstBoxColumn = col - col % smallBoxSize;
+            for (int i = 0; i < Globals._boardSize; i++)
+            {
+                if (board[i, col] == 0 && i != row && rowFlag)
+                    rowFlag = !IsValid(board, i, col, gussed_number);
+                if (board[row, i] == 0 && i != col && colFlg)
+                    colFlg = !IsValid(board, row, i, gussed_number);
+            }
+            for (int i = firstBoxRow; i < firstBoxRow + smallBoxSize; i++)
+            {
+                for (int j = firstBoxColumn; j < firstBoxColumn + smallBoxSize; j++)
+                {
+                    if (board[i, j] == 0 && !(i == row && j == col))
+                    {
+                        smallBoxFlag = !IsValid(board, i, j, gussed_number);
+                        if (!smallBoxFlag)
+                        {
+                            breakLoops = true;
+                            break;
+                        }
+                            
+                    }
+                }
+                if (breakLoops)
+                    break;
+            }
+            return rowFlag || colFlg || smallBoxFlag;
+
         }
         public bool IsValid(int[,] board, int row, int col, int number)
         {
@@ -90,6 +162,17 @@ namespace Sudoku
             }
             return true;
 
+        }
+        public void printmatrix(int[,] board)
+        {
+            for (int i = 0; i < Globals._boardSize; i++)
+            {
+                for (int j = 0; j < Globals._boardSize; j++)
+                {
+                    Console.Write(board[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
         }
     }
 }
