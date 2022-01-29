@@ -4,22 +4,18 @@ using System.Text;
 
 namespace Sudoku
 {
-    class Cell
+    public class Cell
     {
-        internal int value { get; set; }
-        private readonly bool is_constant;
-
+        public int _value { get; set; }
+        public int _tempValue { get; set; }
+        public bool _is_constant { get; set; }
+        public List<int> _possibleNumbers { get; set; }
         public Cell(int value, bool is_constant)
         {
-            this.value = value;
-            this.is_constant = is_constant;
-        }
-        public void reset_possible_numbers(int board_size)
-        {
-            for(int i = 1;i <= board_size;i++)
-            {
-
-            }
+            this._value = value;
+            this._is_constant = is_constant;
+            this._tempValue = value;
+            this._possibleNumbers = new List<int>();
         }
     }
 }
