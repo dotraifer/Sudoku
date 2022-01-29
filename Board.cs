@@ -45,6 +45,9 @@ namespace Sudoku
         }
         public bool backtracking()
         {
+            int[,] temp = new int[Globals._boardSize, Globals._boardSize];
+            bool has_changed = true;
+            Console.WriteLine("hey");
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 for (int j = 0; j < Globals._boardSize; j++)
@@ -56,7 +59,40 @@ namespace Sudoku
                             if (IsValid(_cells, i, j, possibleNum))
                             {
                                 _cells[i, j] = possibleNum;
-
+                                if (DoesOnlyPossible(_cells, i ,j , possibleNum))
+                                {
+                                    for (int k = 0; k < Globals._boardSize; k++)
+                                    {
+                                        for (int d = 0; d < Globals._boardSize; d++)
+                                        {
+                                            temp[k, d] = _cells[k, d];
+                                        }
+                                    }
+                                    while (has_changed)
+                                    {
+                                        Console.WriteLine("before:");
+                                        printmatrix(_cells);
+                                        has_changed = FindOnlyPossibility();
+                                        Console.WriteLine("after:");
+                                        printmatrix(_cells);
+                                        Console.WriteLine(has_changed);
+                                    }
+                                    if (isBoardSolved(_cells))
+                                    {
+                                        Console.WriteLine("printdfgf");
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        for (int k = 0; k < Globals._boardSize; k++)
+                                        {
+                                            for (int d = 0; d < Globals._boardSize; d++)
+                                            {
+                                                _cells[k, d] = temp[k, d];
+                                            }
+                                        }
+                                    }
+                                }
                                 if (backtracking())
                                     return true;
                                 else
@@ -65,6 +101,29 @@ namespace Sudoku
                         }
                         return false;
                     }
+                }
+            }
+            return true;
+        }
+        public int[,] copyMatrix(int[,] gettingMat, int[,] SettingMat)
+        {
+            for (int i = 0; i < Globals._boardSize; i++)
+            {
+                for (int j = 0; j < Globals._boardSize; j++)
+                {
+                    gettingMat = SettingMat;
+                }
+            }
+            return gettingMat;
+        }
+        public bool isBoardSolved(int[,] board)
+        {
+            for (int i = 0; i < Globals._boardSize; i++)
+            {
+                for (int j = 0; j < Globals._boardSize; j++)
+                {
+                    if (board[i, j] == 0)
+                        return false;
                 }
             }
             return true;
@@ -83,6 +142,7 @@ namespace Sudoku
                             if(IsValid(_cells, i, j, gussed_number) && DoesOnlyPossible(_cells, i , j, gussed_number))
                             {
                                 _cells[i, j] = gussed_number;
+                                Console.WriteLine(i + "," + j + "," + gussed_number);
                                 has_changed = true;
                                 break;
                             }
