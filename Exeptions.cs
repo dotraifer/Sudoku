@@ -16,4 +16,8 @@ namespace Sudoku
     {
         public InsolubleBoardException(String massage) : base(massage) { }
     }
+    public class InvalidBoardException : Exception
+    {
+        public InvalidBoardException(String massage) : base(massage) { }
+    }
 }

@@ -19,27 +19,19 @@ namespace Sudoku
         {
             this._cells = cells;
         }
-        public bool IsBoardValid()
-        {
-            for (int i = 0; i < Globals._boardSize; i++)
-            {
-                for (int j = 0; j < Globals._boardSize; j++)
-                {
-                    if (_cells[i, j] != 0 && !IsValid(_cells, i, j, _cells[i, j]))
-                        return false;
-                }
-            }
-            return true;  
-        }
         public bool SolveBoard()
+        {
+            return SolveBoard(_cells);
+        }
+        public bool SolveBoard(int [,] board)
         {
             bool has_changed = true;
             while (has_changed)
             {
-                printmatrix(_cells);
+                printmatrix(board);
                 Console.WriteLine();
-                has_changed =  FindOnlyPossibility();
-                printmatrix(_cells);
+                has_changed =  LogicalSolveing(board);
+                printmatrix(board);
             }
             return backtracking();
         }
@@ -53,10 +45,9 @@ namespace Sudoku
                     {
                         for (int possibleNum = 1; possibleNum <= Globals._boardSize; possibleNum++)
                         {
-                            if (IsValid(_cells, i, j, possibleNum))
+                            if (Solver.IsValid(_cells, i, j, possibleNum))
                             {
                                 _cells[i, j] = possibleNum;
-
                                 if (backtracking())
                                     return true;
                                 else
@@ -69,52 +60,87 @@ namespace Sudoku
             }
             return true;
         }
-        public bool FindOnlyPossibility()
+        public int[,] arrayCopy(int[,] input)
+        {
+            int[,] result = new int[input.GetLength(0), input.GetLength(1)]; //Create a result array that is the same length as the input array
+            for (int x = 0; x < input.GetLength(0); ++x) //Iterate through the horizontal rows of the two dimensional array
+            {
+                for (int y = 0; y < input.GetLength(1); ++y) //Iterate throught the vertical rows, to add more dimensions add another for loop for z
+                {
+                    result[x, y] = input[x, y]; //Change result x,y to input x,y
+                }
+            }
+            return result;
+        }
+        public bool LogicalSolveing(int [,] board)
         {
             bool has_changed = false;
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 for (int j = 0; j < Globals._boardSize; j++)
                 {
-                    if(_cells[i,j] == 0)
+                    if(board[i,j] == 0)
                     {
-                        for (int gussed_number = 1; gussed_number <= Globals._boardSize; gussed_number++)
-                        {
-                            if(IsValid(_cells, i, j, gussed_number) && DoesOnlyPossible(_cells, i , j, gussed_number))
-                            {
-                                _cells[i, j] = gussed_number;
-                                has_changed = true;
-                                break;
-                            }
-                        }
+                        has_changed = FindOnlyPossibility(board, i , j);
                     }
                 }
             }
             return has_changed;
         }
+        public bool FindOnlyPossibility(int[,] board, int row, int col)
+        {
+            bool has_changed = false;
+            for (int gussed_number = 1; gussed_number <= Globals._boardSize; gussed_number++)
+            {
+                if (Solver.IsValid(board, row, col, gussed_number) && DoesOnlyPossible(board, row, col, gussed_number))
+                {
+                    board[row, col] = gussed_number;
+                    has_changed = true;
+                    break;
+                }
+            }
+            return has_changed;
+        }
+
+        /// <summary>
+        /// this function check by looking on the row, col and small bax of the place, if the gueesed number is the only possible number for the square we check on. 
+        /// </summary>
+        /// <param name="board"> the board state we want to check on</param>
+        /// <param name="row"> the row of the place we want to check if there are only one possibility</param>
+        /// <param name="col"> the col of the place we want to check if there are only one possibility</param>
+        /// <param name="gussed_number">the number we check if he is the only one possible</param>
+        /// <returns>True if the gueesed number is the only suitable for the row and col, False otherwise</returns>
         public bool DoesOnlyPossible(int[,] board ,int row, int col, int gussed_number)
         {
             bool breakLoops = false;
+            // flag that say if the number is the only possibility according to the row
             bool rowFlag = true;
+            // flag that say if the number is the only possibility according to the col
             bool colFlg = true;
+            // flag that say if the number is the only possibility according to the small Box
             bool smallBoxFlag = true;
             int smallBoxSize = (int)Math.Sqrt(Globals._boardSize);
+            // get the coordinates of the first square in the small box
             int firstBoxRow = row - row % smallBoxSize;
             int firstBoxColumn = col - col % smallBoxSize;
+            // if each row, col or small box, check if there is other box that the number can be applied to
             for (int i = 0; i < Globals._boardSize; i++)
             {
+                // check row
                 if (board[i, col] == 0 && i != row && rowFlag)
-                    rowFlag = !IsValid(board, i, col, gussed_number);
+                    rowFlag = !Solver.IsValid(board, i, col, gussed_number);
+                // check col
                 if (board[row, i] == 0 && i != col && colFlg)
-                    colFlg = !IsValid(board, row, i, gussed_number);
+                    colFlg = !Solver.IsValid(board, row, i, gussed_number);
             }
+            // check small box
             for (int i = firstBoxRow; i < firstBoxRow + smallBoxSize; i++)
             {
                 for (int j = firstBoxColumn; j < firstBoxColumn + smallBoxSize; j++)
                 {
                     if (board[i, j] == 0 && !(i == row && j == col))
                     {
-                        smallBoxFlag = !IsValid(board, i, j, gussed_number);
+                        smallBoxFlag = !Solver.IsValid(board, i, j, gussed_number);
                         if (!smallBoxFlag)
                         {
                             breakLoops = true;
@@ -126,41 +152,8 @@ namespace Sudoku
                 if (breakLoops)
                     break;
             }
+            // will return true if in one of those the the gueesed number in row, col is the only possibility
             return rowFlag || colFlg || smallBoxFlag;
-
-        }
-        public bool IsValid(int[,] board, int row, int col, int number)
-        {
-            for (int i = 0; i < Globals._boardSize; i++)
-            {
-                //check row  
-                if (board[i, col] != 0 && i != row&& board[i, col] == number)
-                    return false;
-                //check column  
-                if (board[row, i] != 0 && i != col && board[row, i] == number)
-                    return false;
-                //check smaller box block  
-            }
-            if (!IsSmallBoxValid(board, row, col, number))
-                return false;
-            return true;
-        }
-        public bool IsSmallBoxValid(int[,] board, int row, int col, int number)
-        {
-            // 010040050407000602820600074000010500500000003004050000960003045305000801070020030
-            // 000260701680070090190004500820100040004602900050003028009300074040050036703018000
-            int smallBoxSize = (int)Math.Sqrt(Globals._boardSize);
-            int firstBoxRow = row - row % smallBoxSize;
-            int firstBoxColumn = col - col % smallBoxSize;
-            for (int i = firstBoxRow; i < firstBoxRow + smallBoxSize; i++)
-            {
-                for (int j = firstBoxColumn; j < firstBoxColumn + smallBoxSize; j++)
-                {
-                    if (board[i, j] == number && !(i == row && j == col))
-                        return false;
-                }
-            }
-            return true;
 
         }
         public void printmatrix(int[,] board)
