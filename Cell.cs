@@ -6,16 +6,22 @@ namespace Sudoku
 {
     public class Cell
     {
-        public int _value { get; set; }
-        public int _tempValue { get; set; }
-        public bool _is_constant { get; set; }
-        public List<int> _possibleNumbers { get; set; }
-        public Cell(int value, bool is_constant)
+        private int _value;
+        public int Value
         {
-            this._value = value;
-            this._is_constant = is_constant;
-            this._tempValue = value;
-            this._possibleNumbers = new List<int>();
+            get { return _value; }
+            set { _value = value; }
+        }
+        private List<int>  _possibleNumbers;
+        public List<int> PossibleNumbers
+        {
+            get { return _possibleNumbers; }
+            set { _possibleNumbers = value; }
+        }
+        public Cell(int value)
+        {
+            this.Value = value;
+            this.PossibleNumbers = new List<int>();
         }
     }
 }

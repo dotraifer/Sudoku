@@ -27,23 +27,23 @@ namespace Sudoku
                 throw (new UnpossibleBoardSizeExeption("cant make a board out of " + board_string.Length + " numbers"));
             else
             {
-                Globals._boardSize = (int)Math.Sqrt(board_string.Length);
-                Globals._smallBoxSize = (int)Math.Sqrt(Globals._boardSize);
-                Cell[,] grid = new Cell[Globals._boardSize, Globals._boardSize];
+                Globals.BoardSize = (int)Math.Sqrt(board_string.Length);
+                Globals.SmallBoxSize = (int)Math.Sqrt(Globals.BoardSize);
+                Cell[,] grid = new Cell[Globals.BoardSize, Globals.BoardSize];
                 int arr_counter = 0;
-                for (int i = 0; i < Globals._boardSize; i++)
+                for (int i = 0; i < Globals.BoardSize; i++)
                 {
-                    for (int j = 0; j < Globals._boardSize; j++)
+                    for (int j = 0; j < Globals.BoardSize; j++)
                     {
                         int value = (int)(board_string[arr_counter] - '0');
-                        if (value < 0 || value > Globals._boardSize)
+                        if (value < 0 || value > Globals.BoardSize)
                             throw (new InvalidCharException("the char " + board_string[arr_counter] + " is illegal"));
                         else
                         {
                             if(value == 0)
-                                grid[i, j] = new Cell(value, false);
+                                grid[i, j] = new Cell(value);
                             else
-                                grid[i, j] = new Cell(value, true);
+                                grid[i, j] = new Cell(value);
                             arr_counter++;
                         }
                     }
@@ -59,17 +59,17 @@ namespace Sudoku
                 throw (new InvalidBoardException("board is not valid"));
             if (!_board.SolveBoard(board) || !Solver.IsBoardValid(board))
                 throw (new InsolubleBoardException("board is Insoluble"));
-            return ReturnToArray(board.GetCells());
+            return ReturnToArray(board.Cells);
         }
 
         public string ReturnToArray(Cell[,] grid)
         {
             string result = "";
-            for (int i = 0; i < Globals._boardSize; i++)
+            for (int i = 0; i < Globals.BoardSize; i++)
             {
-                for (int j = 0; j < Globals._boardSize; j++)
+                for (int j = 0; j < Globals.BoardSize; j++)
                 {
-                    result += (char)(grid[i, j]._value + 48);
+                    result += (char)(grid[i, j].Value + 48);
                 }
             }
             return result;

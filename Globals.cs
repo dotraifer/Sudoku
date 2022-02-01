@@ -6,8 +6,8 @@ namespace Sudoku
 {
     public static class Globals
     {
-        public static int _boardSize = 0;
-        public static int _smallBoxSize = 0;
-        public static int _biggestNumberSize = 1;
+        public static int BoardSize = 0;
+        public static int SmallBoxSize = 0;
+        public static int BiggestNumberSize = 1;
     }
 }

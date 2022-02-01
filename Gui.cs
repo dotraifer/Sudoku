@@ -10,9 +10,9 @@ namespace Sudoku
         {
             CalcMaximumSize();
             int board_counter = 0;
-            for (int i = 0; i < Globals._boardSize; i++)
+            for (int i = 0; i < Globals.BoardSize; i++)
             {
-                if (i % Globals._smallBoxSize == 0)
+                if (i % Globals.SmallBoxSize == 0)
                     Console.ForegroundColor = ConsoleColor.Red;
                 PrintUpperBorder();
                 Console.ForegroundColor = ConsoleColor.White;
@@ -29,11 +29,11 @@ namespace Sudoku
         }
         public static void PrintNumbersRow(string board, ref int board_counter)
         {
-            for (int k = 0; k <= Globals._boardSize * 6; k++)
+            for (int k = 0; k <= Globals.BoardSize * 6; k++)
             {
                 if (k % 6 == 0)
                 {
-                    if ((k % (Globals._smallBoxSize * 6) == 0))
+                    if ((k % (Globals.SmallBoxSize * 6) == 0))
                         Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("|");
                     Console.ForegroundColor = ConsoleColor.White;
@@ -41,7 +41,7 @@ namespace Sudoku
                 else if ((k + 3) % 6 == 0)
                 {
                     Console.Write((int)(board[board_counter] - 48));
-                    for (int j = 0; j < Globals._biggestNumberSize - (int)(board[board_counter] - 48).ToString().Length; j++)
+                    for (int j = 0; j < Globals.BiggestNumberSize - (int)(board[board_counter] - 48).ToString().Length; j++)
                         Console.Write(" ");
                     board_counter++;
                 }
@@ -52,10 +52,10 @@ namespace Sudoku
         }
         public static void PrintUpperBorder()
         {
-            for (int k = 0; k <= Globals._boardSize * 6; k++)
+            for (int k = 0; k <= Globals.BoardSize * 6; k++)
             {
                 if ((k + 3) % 6 == 0)
-                    for (int i = 0; i < Globals._biggestNumberSize; i++)
+                    for (int i = 0; i < Globals.BiggestNumberSize; i++)
                         Console.Write("-");
                 else
                     Console.Write("-");
@@ -64,17 +64,17 @@ namespace Sudoku
         }
         public static void PrintEmptyRow()
         {
-            for (int k = 0; k <= Globals._boardSize * 6; k++)
+            for (int k = 0; k <= Globals.BoardSize * 6; k++)
             {
                 if (k % 6 == 0)
                 {
-                    if (k % (6 * Globals._smallBoxSize) == 0)
+                    if (k % (6 * Globals.SmallBoxSize) == 0)
                         Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("|");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
                 else if ((k + 3) % 6 == 0)
-                    for (int i = 0; i < Globals._biggestNumberSize; i++)
+                    for (int i = 0; i < Globals.BiggestNumberSize; i++)
                         Console.Write(" ");
                 else
                     Console.Write(" ");
@@ -83,7 +83,7 @@ namespace Sudoku
         }
         public static void CalcMaximumSize()
         {
-            Globals._biggestNumberSize = Globals._boardSize.ToString().Length;
+            Globals.BiggestNumberSize = Globals.BoardSize.ToString().Length;
         }
         public static void PrintManu()
         {

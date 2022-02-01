@@ -17,19 +17,19 @@ namespace Sudoku
             }
             catch (UnpossibleBoardSizeExeption e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
             }
             catch (InvalidCharException e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
             }
             catch (InsolubleBoardException e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
             }
             catch (InvalidBoardException e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
             }
             catch (DivideByZeroException e)
             {
@@ -40,11 +40,11 @@ namespace Sudoku
 
         public static bool IsBoardValid(Board board)
         {
-            for (int i = 0; i < Globals._boardSize; i++)
+            for (int i = 0; i < Globals.BoardSize; i++)
             {
-                for (int j = 0; j < Globals._boardSize; j++)
+                for (int j = 0; j < Globals.BoardSize; j++)
                 {
-                    if (board._cells[i, j]._value != 0 && !IsValid(board, i, j, board._cells[i, j]._value))
+                    if (board.Cells[i, j].Value != 0 && !IsValid(board, i, j, board.Cells[i, j].Value))
                         return false;
                 }
             }
@@ -61,13 +61,13 @@ namespace Sudoku
         /// <returns>True if valid False otherwise</returns>
         public static  bool IsValid(Board board, int row, int col, int number)
         {
-            for (int i = 0; i < Globals._boardSize; i++)
+            for (int i = 0; i < Globals.BoardSize; i++)
             {
                 //check row  
-                if (board._cells[i, col]._value != 0 && i != row && board._cells[i, col]._value == number)
+                if (board.Cells[i, col].Value != 0 && i != row && board.Cells[i, col].Value == number)
                     return false;
                 //check column  
-                if (board._cells[row, i]._value != 0 && i != col && board._cells[row, i]._value == number)
+                if (board.Cells[row, i].Value != 0 && i != col && board.Cells[row, i].Value == number)
                     return false;
                 //check smaller box block  
             }
@@ -88,27 +88,27 @@ namespace Sudoku
         {
             // 010040050407000602820600074000010500500000003004050000960003045305000801070020030
             // 000260701680070090190004500820100040004602900050003028009300074040050036703018000
-            int smallBoxSize = (int)Math.Sqrt(Globals._boardSize);
+            int smallBoxSize = (int)Math.Sqrt(Globals.BoardSize);
             int firstBoxRow = row - row % smallBoxSize;
             int firstBoxColumn = col - col % smallBoxSize;
             for (int i = firstBoxRow; i < firstBoxRow + smallBoxSize; i++)
             {
                 for (int j = firstBoxColumn; j < firstBoxColumn + smallBoxSize; j++)
                 {
-                    if (board._cells[i, j]._value == number && !(i == row && j == col))
+                    if (board.Cells[i, j].Value == number && !(i == row && j == col))
                         return false;
                 }
             }
             return true;
 
         }
-        public static bool isBoardSolved(Board board)
+        public static bool IsBoardSolved(Board board)
         {
-            for (int i = 0; i < board._cells.GetLength(0); i++)
+            for (int i = 0; i < board.Cells.GetLength(0); i++)
             {
-                for (int j = 0; j < board._cells.GetLength(1); j++)
+                for (int j = 0; j < board.Cells.GetLength(1); j++)
                 {
-                    if (board._cells[i, j]._value == 0)
+                    if (board.Cells[i, j].Value == 0)
                         return false;
                 }
             }
