@@ -41,9 +41,9 @@ namespace Sudoku
                         else
                         {
                             if(value == 0)
-                                grid[i, j] = new Cell(value);
+                                grid[i, j] = new Cell(value, i, j);
                             else
-                                grid[i, j] = new Cell(value);
+                                grid[i, j] = new Cell(value, i, j);
                             arr_counter++;
                         }
                     }

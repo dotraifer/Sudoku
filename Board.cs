@@ -27,31 +27,35 @@ namespace Sudoku
         }
         public bool BackTracking(Board board)
         {
-            for (int i = 0; i < Globals.BoardSize; i++)
+            Cell cellChecked = FindLeastOptionsCell(board.Cells);
+            if(cellChecked == null)
             {
-                for (int j = 0; j < Globals.BoardSize; j++)
+                if(Solver.IsBoardSolved(board))
                 {
-                    if (board.Cells[i, j].Value == 0)
-                    {
-                        foreach (int possibleNum in board.Cells[i, j].PossibleNumbers)
-                        {
-                            if (Solver.IsValid(board, i, j, possibleNum))
-                            {
-                                Board newBoard = new Board(board.ArrayCopy());
-                                //Board newBoard = new 
-                                newBoard.Cells[i, j].Value = possibleNum;
-                                if (SolveBoard(newBoard))
-                                {
-                                    if(!Solver.IsBoardSolved(this))
-                                        Cells = newBoard.ArrayCopy();
-                                    return true;
-                                }
-                                
-                            }                  
-                        }
-                        return false;
-                    }
+                    Cells = board.ArrayCopy();
+                    return true;
                 }
+                return false;
+            }
+            if (cellChecked.Value == 0)
+            {
+                foreach (int possibleNum in cellChecked.PossibleNumbers)
+                {
+                    if (Solver.IsValid(board, cellChecked.XLocation, cellChecked.YLocation, possibleNum))
+                    {
+                        Board newBoard = new Board(board.ArrayCopy());
+                        //Board newBoard = new 
+                        newBoard.Cells[cellChecked.XLocation, cellChecked.YLocation].Value = possibleNum;
+                        if (SolveBoard(newBoard))
+                        {
+                            if(!Solver.IsBoardSolved(this))
+                                Cells = newBoard.ArrayCopy();
+                            return true;
+                        }
+                                
+                    }                  
+                }
+                return false;
             }
             return true;
         }
@@ -62,7 +66,7 @@ namespace Sudoku
             {
                 for (int y = 0; y < Cells.GetLength(1); ++y) //Iterate throught the vertical rows, to add more dimensions add another for loop for z
                 {
-                    result[x, y] = new Cell(Cells[x,y].Value); //Change result x,y to input x,y
+                    result[x, y] = new Cell(Cells[x,y].Value, Cells[x, y].XLocation, Cells[x, y].YLocation); //Change result x,y to input x,y
                 }
             }
             return result;
@@ -98,6 +102,8 @@ namespace Sudoku
                 {
                     board.Cells[row, col].PossibleNumbers.Add(gussed_number);
                 }
+                else
+                    board.Cells[row, col].PossibleNumbers.Remove(gussed_number);
             }
             return has_changed;
         }
@@ -155,6 +161,24 @@ namespace Sudoku
             // will return true if in one of those the the gueesed number in row, col is the only possibility
             return rowFlag || colFlg || smallBoxFlag;
 
+        }
+        public Cell FindLeastOptionsCell(Cell[,] cells)
+        {
+            Cell minCell = null;
+            for (int i = 0; i < Globals.BoardSize; i++)
+            {
+                for (int j = 0; j < Globals.BoardSize; j++)
+                {
+                    if (cells[i, j].Value == 0)
+                    {
+                        if (minCell == null)
+                            minCell = cells[i, j];
+                        if (cells[i, j].PossibleNumbers.Count < minCell.PossibleNumbers.Count )
+                            minCell = cells[i, j];
+                    }
+                }
+            }
+            return minCell;
         }
         public void PrintMatrix(Board board)
         {
