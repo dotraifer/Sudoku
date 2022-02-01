@@ -4,55 +4,54 @@ using System.Text;
 
 namespace Sudoku
 {
-    class Board
+    public class Board
     {
-        private int[,] _cells;
-        public Board(int[,] cells)
+        public Cell[,] _cells;
+        public Board(Cell[,] cells)
         {
             this._cells = cells;
         }
-        public int[,] GetCells()
+        public Cell[,] GetCells()
         {
             return _cells;
         }
-        public void SetCells(int[,] cells)
+        public void SetCells(Cell[,] cells)
         {
             this._cells = cells;
         }
-        public bool SolveBoard()
+        public bool SolveBoard(Board board)
         {
-            return SolveBoard(_cells);
+            return backtracking(board);
         }
-        public bool SolveBoard(int [,] board)
+        public bool backtracking(Board board)
         {
             bool has_changed = true;
             while (has_changed)
             {
-                printmatrix(board);
-                Console.WriteLine();
-                has_changed =  LogicalSolveing(board);
-                printmatrix(board);
+                has_changed = LogicalSolveing(board);
             }
-            return backtracking();
-        }
-        public bool backtracking()
-        {
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 for (int j = 0; j < Globals._boardSize; j++)
                 {
-                    if (_cells[i, j] == 0)
+                    if (board._cells[i, j]._value == 0)
                     {
-                        for (int possibleNum = 1; possibleNum <= Globals._boardSize; possibleNum++)
+                        foreach (int possibleNum in board._cells[i, j]._possibleNumbers)
                         {
-                            if (Solver.IsValid(_cells, i, j, possibleNum))
+                            if (Solver.IsValid(board, i, j, possibleNum))
                             {
-                                _cells[i, j] = possibleNum;
-                                if (backtracking())
+                                Board newBoard = new Board(board.arrayCopy());
+                                //Board newBoard = new 
+                                newBoard._cells[i, j]._value = possibleNum;
+                                if (backtracking(newBoard))
+                                {
+                                    if(!Solver.isBoardSolved(this))
+                                        _cells = newBoard.arrayCopy();
                                     return true;
-                                else
-                                    _cells[i, j] = 0;
+                                }
+                                
                             }
+                            
                         }
                         return false;
                     }
@@ -60,26 +59,26 @@ namespace Sudoku
             }
             return true;
         }
-        public int[,] arrayCopy(int[,] input)
+        public Cell[,] arrayCopy()
         {
-            int[,] result = new int[input.GetLength(0), input.GetLength(1)]; //Create a result array that is the same length as the input array
-            for (int x = 0; x < input.GetLength(0); ++x) //Iterate through the horizontal rows of the two dimensional array
+            Cell[,] result = new Cell[_cells.GetLength(0), _cells.GetLength(1)]; //Create a result array that is the same length as the input array
+            for (int x = 0; x < _cells.GetLength(0); ++x) //Iterate through the horizontal rows of the two dimensional array
             {
-                for (int y = 0; y < input.GetLength(1); ++y) //Iterate throught the vertical rows, to add more dimensions add another for loop for z
+                for (int y = 0; y < _cells.GetLength(1); ++y) //Iterate throught the vertical rows, to add more dimensions add another for loop for z
                 {
-                    result[x, y] = input[x, y]; //Change result x,y to input x,y
+                    result[x, y] = new Cell(_cells[x,y]._value, _cells[x, y]._is_constant); //Change result x,y to input x,y
                 }
             }
             return result;
         }
-        public bool LogicalSolveing(int [,] board)
+        public bool LogicalSolveing(Board board)
         {
             bool has_changed = false;
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 for (int j = 0; j < Globals._boardSize; j++)
                 {
-                    if(board[i,j] == 0)
+                    if(board._cells[i, j]._value == 0)
                     {
                         has_changed = FindOnlyPossibility(board, i , j);
                     }
@@ -87,16 +86,22 @@ namespace Sudoku
             }
             return has_changed;
         }
-        public bool FindOnlyPossibility(int[,] board, int row, int col)
+        public bool FindOnlyPossibility(Board board, int row, int col)
         {
+            board._cells[row, col]._possibleNumbers.Clear();
             bool has_changed = false;
             for (int gussed_number = 1; gussed_number <= Globals._boardSize; gussed_number++)
             {
                 if (Solver.IsValid(board, row, col, gussed_number) && DoesOnlyPossible(board, row, col, gussed_number))
                 {
-                    board[row, col] = gussed_number;
+                    board._cells[row, col]._is_constant = true;
+                    board._cells[row, col]._value = gussed_number;
                     has_changed = true;
                     break;
+                }
+                else if(Solver.IsValid(board, row, col, gussed_number))
+                {
+                    board._cells[row, col]._possibleNumbers.Add(gussed_number);
                 }
             }
             return has_changed;
@@ -110,7 +115,7 @@ namespace Sudoku
         /// <param name="col"> the col of the place we want to check if there are only one possibility</param>
         /// <param name="gussed_number">the number we check if he is the only one possible</param>
         /// <returns>True if the gueesed number is the only suitable for the row and col, False otherwise</returns>
-        public bool DoesOnlyPossible(int[,] board ,int row, int col, int gussed_number)
+        public bool DoesOnlyPossible(Board board ,int row, int col, int gussed_number)
         {
             bool breakLoops = false;
             // flag that say if the number is the only possibility according to the row
@@ -127,10 +132,10 @@ namespace Sudoku
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 // check row
-                if (board[i, col] == 0 && i != row && rowFlag)
+                if (board._cells[i, col]._value == 0 && i != row && rowFlag)
                     rowFlag = !Solver.IsValid(board, i, col, gussed_number);
                 // check col
-                if (board[row, i] == 0 && i != col && colFlg)
+                if (board._cells[row, i]._value == 0 && i != col && colFlg)
                     colFlg = !Solver.IsValid(board, row, i, gussed_number);
             }
             // check small box
@@ -138,7 +143,7 @@ namespace Sudoku
             {
                 for (int j = firstBoxColumn; j < firstBoxColumn + smallBoxSize; j++)
                 {
-                    if (board[i, j] == 0 && !(i == row && j == col))
+                    if (board._cells[i, j]._value == 0 && !(i == row && j == col))
                     {
                         smallBoxFlag = !Solver.IsValid(board, i, j, gussed_number);
                         if (!smallBoxFlag)
@@ -156,13 +161,13 @@ namespace Sudoku
             return rowFlag || colFlg || smallBoxFlag;
 
         }
-        public void printmatrix(int[,] board)
+        public void printmatrix(Board board)
         {
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 for (int j = 0; j < Globals._boardSize; j++)
                 {
-                    Console.Write(board[i, j] + " ");
+                    Console.Write(board._cells[i, j]._value + " ");
                 }
                 Console.WriteLine();
             }

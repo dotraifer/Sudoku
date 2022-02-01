@@ -30,12 +30,16 @@ namespace Sudoku
                         break;
 
                 }
+                var watch = new System.Diagnostics.Stopwatch();
+                watch.Start();
                 string result_board = Solver.Solve(board_string);
                 // TODO : clean the main
                 if (result_board != null)
                 {
+                    watch.Stop();
                     Gui.PrintBoard(board_string);
                     Gui.PrintBoard(result_board);
+                    Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
                 }
             }
         }

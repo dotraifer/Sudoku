@@ -13,7 +13,7 @@ namespace Sudoku
             try
             {
                 Game game = new Game(board_string);
-                return game.SolveBoard();
+                return game.SolveBoard(game.GetBoard());
             }
             catch (UnpossibleBoardSizeExeption e)
             {
@@ -38,13 +38,13 @@ namespace Sudoku
             return null;
         }
 
-        public static bool IsBoardValid(int [,] board)
+        public static bool IsBoardValid(Board board)
         {
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 for (int j = 0; j < Globals._boardSize; j++)
                 {
-                    if (board[i, j] != 0 && !IsValid(board, i, j, board[i, j]))
+                    if (board._cells[i, j]._value != 0 && !IsValid(board, i, j, board._cells[i, j]._value))
                         return false;
                 }
             }
@@ -59,15 +59,15 @@ namespace Sudoku
         /// <param name="col"> the col we check</param>
         /// <param name="number">the number we check</param>
         /// <returns>True if valid False otherwise</returns>
-        public static  bool IsValid(int[,] board, int row, int col, int number)
+        public static  bool IsValid(Board board, int row, int col, int number)
         {
             for (int i = 0; i < Globals._boardSize; i++)
             {
                 //check row  
-                if (board[i, col] != 0 && i != row && board[i, col] == number)
+                if (board._cells[i, col]._value != 0 && i != row && board._cells[i, col]._value == number)
                     return false;
                 //check column  
-                if (board[row, i] != 0 && i != col && board[row, i] == number)
+                if (board._cells[row, i]._value != 0 && i != col && board._cells[row, i]._value == number)
                     return false;
                 //check smaller box block  
             }
@@ -84,7 +84,7 @@ namespace Sudoku
         /// <param name="col"> the col we check</param>
         /// <param name="number">the number we check</param>
         /// <returns>True if it valid to put the number in the small box, false otherwise</returns>
-        public static bool IsSmallBoxValid(int[,] board, int row, int col, int number)
+        public static bool IsSmallBoxValid(Board board, int row, int col, int number)
         {
             // 010040050407000602820600074000010500500000003004050000960003045305000801070020030
             // 000260701680070090190004500820100040004602900050003028009300074040050036703018000
@@ -95,12 +95,24 @@ namespace Sudoku
             {
                 for (int j = firstBoxColumn; j < firstBoxColumn + smallBoxSize; j++)
                 {
-                    if (board[i, j] == number && !(i == row && j == col))
+                    if (board._cells[i, j]._value == number && !(i == row && j == col))
                         return false;
                 }
             }
             return true;
 
+        }
+        public static bool isBoardSolved(Board board)
+        {
+            for (int i = 0; i < board._cells.GetLength(0); i++)
+            {
+                for (int j = 0; j < board._cells.GetLength(1); j++)
+                {
+                    if (board._cells[i, j]._value == 0)
+                        return false;
+                }
+            }
+            return true;
         }
     }
 }
