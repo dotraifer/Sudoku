@@ -28,6 +28,7 @@ namespace Sudoku
             else
             {
                 Globals._boardSize = (int)Math.Sqrt(board_string.Length);
+                Globals._smallBoxSize = (int)Math.Sqrt(Globals._boardSize);
                 Cell[,] grid = new Cell[Globals._boardSize, Globals._boardSize];
                 int arr_counter = 0;
                 for (int i = 0; i < Globals._boardSize; i++)

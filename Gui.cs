@@ -12,13 +12,17 @@ namespace Sudoku
             int board_counter = 0;
             for (int i = 0; i < Globals._boardSize; i++)
             {
-                //
+                if (i % Globals._smallBoxSize == 0)
+                    Console.ForegroundColor = ConsoleColor.Red;
                 PrintUpperBorder();
+                Console.ForegroundColor = ConsoleColor.White;
                 PrintEmptyRow();
                 PrintNumbersRow(board, ref board_counter);
                 PrintEmptyRow();
             }
+            Console.ForegroundColor = ConsoleColor.Red;
             PrintUpperBorder();
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
 
 
@@ -28,7 +32,12 @@ namespace Sudoku
             for (int k = 0; k <= Globals._boardSize * 6; k++)
             {
                 if (k % 6 == 0)
+                {
+                    if ((k % (Globals._smallBoxSize * 6) == 0))
+                        Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("|");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
                 else if ((k + 3) % 6 == 0)
                 {
                     Console.Write((int)(board[board_counter] - 48));
@@ -58,7 +67,12 @@ namespace Sudoku
             for (int k = 0; k <= Globals._boardSize * 6; k++)
             {
                 if (k % 6 == 0)
+                {
+                    if (k % (6 * Globals._smallBoxSize) == 0)
+                        Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("|");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
                 else if ((k + 3) % 6 == 0)
                     for (int i = 0; i < Globals._biggestNumberSize; i++)
                         Console.Write(" ");
