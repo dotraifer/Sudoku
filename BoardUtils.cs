@@ -65,8 +65,6 @@ namespace Sudoku
         /// <returns>True if it valid to put the number in the small box, false otherwise</returns>
         public static bool IsSmallBoxValid(Board board, int row, int col, int number)
         {
-            // 010040050407000602820600074000010500500000003004050000960003045305000801070020030
-            // 000260701680070090190004500820100040004602900050003028009300074040050036703018000
             int smallBoxSize = (int)Math.Sqrt(Globals.BoardSize);
             int firstBoxRow = row - row % smallBoxSize;
             int firstBoxColumn = col - col % smallBoxSize;

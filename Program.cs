@@ -37,6 +37,7 @@ namespace Sudoku
                 if (result_board != null)
                 {
                     watch.Stop();
+                    Console.WriteLine(result_board);
                     Gui.PrintBoard(board_string);
                     Gui.PrintBoard(result_board);
                     Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
