@@ -55,9 +55,9 @@ namespace Sudoku
 
         public string SolveBoard(Board board)
         {
-            if(!Solver.IsBoardValid(board))
+            if(!BoardUtils.IsBoardValid(board))
                 throw (new InvalidBoardException("board is not valid"));
-            if (!_board.SolveBoard(board) || !Solver.IsBoardValid(board))
+            if (!_board.SolveBoard(board) || !BoardUtils.IsBoardValid(board))
                 throw (new InsolubleBoardException("board is Insoluble"));
             return ReturnToArray(board.Cells);
         }
