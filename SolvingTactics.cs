@@ -6,41 +6,55 @@ namespace Sudoku
 {
    public static  class SolvingTactics
     {
-        public static bool LogicalSolveing(Board board)
+
+        /// <summary>
+        /// static void function that solve in logical way a given board as must as she can
+        /// </summary>
+        /// <remarks>naked singles and hidden singles implement</remarks>
+        /// <see cref="http://hodoku.sourceforge.net/en/tech_singles.php"/>
+        /// <param name="board">the board to solve</param>
+        public static void LogicalSolveing(Board board)
         {
-            bool has_changed = false;
+            // for every cell
             for (int i = 0; i < Globals.BoardSize; i++)
             {
                 for (int j = 0; j < Globals.BoardSize; j++)
                 {
+                    // if 0, find possibilities
                     if (board.Cells[i, j].Value == 0)
                     {
-                        has_changed = FindOnlyPossibility(board, i, j);
+                         FindPossibilities(board, i,j);
                     }
                 }
             }
-            return has_changed;
         }
-        public static bool FindOnlyPossibility(Board board, int row, int col)
+
+        /// <summary>
+        /// static void function that finds the possibilities for a given empty cell, if it has only one possibility it put it in there
+        /// and update the hasChanged to True
+        /// </summary>
+        /// <param name="board">the board we check on</param>
+        /// <param name="row">the row coordinate of the cell</param>
+        /// <param name="col">the column spot of the cell</param>
+        public static void FindPossibilities(Board board, int row, int col)
         {
+            // clear the list
             board.Cells[row, col].PossibleNumbers.Clear();
-            bool has_changed = false;
+            // if we found only possubility
             for (int gussed_number = 1; gussed_number <= Globals.BoardSize; gussed_number++)
             {
+                // if valid and only number possible
                 if (BoardUtils.IsValid(board, row, col, gussed_number) && DoesOnlyPossible(board, row, col, gussed_number))
                 {
                     board.Cells[row, col].Value = gussed_number;
-                    has_changed = true;
                     break;
                 }
+                // else if just valid
                 else if (BoardUtils.IsValid(board, row, col, gussed_number))
                 {
                     board.Cells[row, col].PossibleNumbers.Add(gussed_number);
                 }
-                else
-                    board.Cells[row, col].PossibleNumbers.Remove(gussed_number);
             }
-            return has_changed;
         }
 
         /// <summary>

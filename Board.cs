@@ -34,12 +34,8 @@ namespace Sudoku
         /// <returns>True if the board has a sulotion, else false</returns>
         public bool SolveBoard(Board board)
         {
-            bool has_changed = true;
             // while the logical solver still find new cells values
-            while (has_changed)
-            {
-                has_changed = SolvingTactics.LogicalSolveing(board);
-            }
+            SolvingTactics.LogicalSolveing(board);
             return BackTracking(board);
         }
 
