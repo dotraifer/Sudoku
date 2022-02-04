@@ -10,7 +10,7 @@ namespace Sudoku
     /// </summary>
     public static class Gui
     {
-        static int cellWidth = 6;
+        static readonly int cellWidth = 6;
         /// <summary>
         /// this function print a given board in pretty way
         /// </summary>

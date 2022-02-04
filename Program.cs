@@ -6,35 +6,47 @@ namespace Sudoku
 {
     class Program
     {
+        // path of the file, will be null if we not using file
         static private string path;
         [STAThread]
         static void Main(string[] args)
         {
-            string board_string;
-            bool isFile;
             while (true)
             {
-                (board_string, isFile) = HandaleUserChoose();
-                var watch = new System.Diagnostics.Stopwatch();
-                watch.Start();
-                if (board_string != null)
-                {
-                    string result_board = Solver.Solve(board_string);
-                    watch.Stop();
-                    if(isFile && result_board != null)
-                        WriteToFile(result_board);
-                    PrintGame(board_string, result_board, watch.ElapsedMilliseconds);
-                }
+                HandleUser();
+            }
+        }
+
+
+        /// <summary>
+        /// calling the methods nedded for the app to work
+        /// </summary>
+        public static void HandleUser()
+        {
+            // our board to solve
+            string board_string = HandaleUserChoose();
+            var watch = new System.Diagnostics.Stopwatch();
+            watch.Start();
+            if (board_string != null)
+            {
+                string result_board = Solver.Solve(board_string);
+                watch.Stop();
+                // if nedded to put to file
+                if (path != null && result_board != null)
+                    // append to the file
+                    WriteToFile(result_board);
+                PrintGame(board_string, result_board, watch.ElapsedMilliseconds);
             }
         }
         /// <summary>
         /// static function that get choose from the user, than update the string by the string he put, and return the string
         /// </summary>
         /// <returns>the string we want to solve</returns>
-        public static (string, bool) HandaleUserChoose()
+        public static string HandaleUserChoose()
         {
             string board_string = null;
-            bool isFile = false;
+            // is file choosen
+            path = null;
             Gui.PrintManu();
             string manuChoose = Console.ReadLine();
             manuChoose = manuChoose.ToLower();
@@ -48,7 +60,6 @@ namespace Sudoku
                 // if he put from file
                 case "file":
                     board_string = ReadFromFile();
-                    isFile = true;
                     break;
                 // if he want to exit
                 case "exit":
@@ -61,7 +72,7 @@ namespace Sudoku
                     break;
 
             }
-            return (board_string, isFile);
+            return board_string;
         }
 
         /// <summary>
@@ -126,8 +137,10 @@ namespace Sudoku
         {
             using (StreamWriter sw = File.AppendText(path))
             {
+                // spaces
                 sw.WriteLine();
                 sw.WriteLine();
+                // enter the solution to the txt file
                 sw.WriteLine(resultBoard);
             }
         }

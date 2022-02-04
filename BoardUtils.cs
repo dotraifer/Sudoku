@@ -66,12 +66,14 @@ namespace Sudoku
         public static bool IsSmallBoxValid(Board board, int row, int col, int number)
         {
             int smallBoxSize = (int)Math.Sqrt(Globals.BoardSize);
+            // find the coordinate of the lowest leftiest cell in the box of the number
             int firstBoxRow = row - row % smallBoxSize;
             int firstBoxColumn = col - col % smallBoxSize;
             for (int i = firstBoxRow; i < firstBoxRow + smallBoxSize; i++)
             {
                 for (int j = firstBoxColumn; j < firstBoxColumn + smallBoxSize; j++)
                 {
+                    // if the it has the alue and it's not the cell we check on
                     if (board.Cells[i, j].Value == number && !(i == row && j == col))
                         return false;
                 }
@@ -88,9 +90,9 @@ namespace Sudoku
         /// <returns>True if the board is solver, false otherwise</returns>
         public static bool IsBoardSolved(Board board)
         {
-            for (int i = 0; i < board.Cells.GetLength(0); i++)
+            for (int i = 0; i < Globals.BoardSize; i++)
             {
-                for (int j = 0; j < board.Cells.GetLength(1); j++)
+                for (int j = 0; j < Globals.BoardSize; j++)
                 {
                     // if we found 0 - it is not solved
                     if (board.Cells[i, j].Value == 0)

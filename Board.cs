@@ -34,9 +34,9 @@ namespace Sudoku
         /// <returns>True if the board has a sulotion, else false</returns>
         public bool SolveBoard(Board board)
         {
-            // while the logical solver still find new cells values
+            // the logical solver find new cells values
             SolvingTactics.LogicalSolveing(board);
-            return BackTracking(board);
+            return GuessNumbers(board);
         }
 
 
@@ -46,7 +46,7 @@ namespace Sudoku
         /// </summary>
         /// <param name="board">the board we want to backtrack on</param>
         /// <returns>True if it found a sulotion, else false</returns>
-        public bool BackTracking(Board board)
+        public bool GuessNumbers(Board board)
         {
             Cell cellChecked = FindLeastOptionsCell(board.Cells);
             // if there is no cells that still has options, we solve the board or that we got to a deadend(no sulotion)
@@ -60,8 +60,10 @@ namespace Sudoku
                 }
                 return false;
             }
+            // if 0
             if (cellChecked.Value == 0)
             {
+                // for every possible num
                 foreach (int possibleNum in cellChecked.PossibleNumbers)
                 {
                     if (BoardUtils.IsValid(board, cellChecked.XLocation, cellChecked.YLocation, possibleNum))
@@ -70,8 +72,10 @@ namespace Sudoku
                         Board newBoard = new Board(board.MatrixCopy());
                         // put the value in it
                         newBoard.Cells[cellChecked.XLocation, cellChecked.YLocation].Value = possibleNum;
+                        // try to solve the new board
                         if (SolveBoard(newBoard))
                         {
+                            // if cells matrix isn't solved, copy to cells
                             if(!BoardUtils.IsBoardSolved(this))
                                 Cells = newBoard.MatrixCopy();
                             return true;
@@ -92,11 +96,12 @@ namespace Sudoku
         public Cell[,] MatrixCopy()
         {
             Cell[,] result = new Cell[Cells.GetLength(0), Cells.GetLength(1)]; //Create a result array that is the same length as the input array
-            for (int x = 0; x < Cells.GetLength(0); ++x) //Iterate through the horizontal rows of the two dimensional array
+            for (int x = 0; x < Globals.BoardSize; ++x) 
             {
-                for (int y = 0; y < Cells.GetLength(1); ++y) //Iterate throught the vertical rows
+                for (int y = 0; y < Globals.BoardSize; ++y)
                 {
-                    result[x, y] = new Cell(Cells[x,y].Value, Cells[x, y].XLocation, Cells[x, y].YLocation); //Copy the cell
+                    //Copy the cell
+                    result[x, y] = new Cell(Cells[x,y].Value, Cells[x, y].XLocation, Cells[x, y].YLocation); 
                 }
             }
             return result;
@@ -110,6 +115,7 @@ namespace Sudoku
         /// <returns>the Cell with smallest number of possible opptions</returns>
         public Cell FindLeastOptionsCell(Cell[,] cells)
         {
+            // saves the cell witht he smallest number of possibilities
             Cell minCell = null;
             for (int i = 0; i < Globals.BoardSize; i++)
             {
@@ -125,17 +131,6 @@ namespace Sudoku
                 }
             }
             return minCell;
-        }
-        public void PrintMatrix(Board board)
-        {
-            for (int i = 0; i < Globals.BoardSize; i++)
-            {
-                for (int j = 0; j < Globals.BoardSize; j++)
-                {
-                    Console.Write(board.Cells[i, j].Value + " ");
-                }
-                Console.WriteLine();
-            }
         }
     }
 }

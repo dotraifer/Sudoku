@@ -19,11 +19,14 @@ namespace Sudoku
         /// <returns>the solution as a string. if the was a problom witht he board(no solution or illegal)-return null</returns>
         public static string Solve(string board_string)
         {
+            // if the board is empty
             if (board_string == null)
                 return null;
             try
             {
+                // create new game
                 Game game = new Game(board_string);
+                // solve the string
                 return game.SolveBoard(game.GetBoard());
             }
             catch (UnpossibleBoardSizeExeption e)

@@ -97,7 +97,8 @@ namespace Sudoku
             {
                 for (int j = 0; j < Globals.BoardSize; j++)
                 {
-                    result += (char)(grid[i, j].Value + 48);
+                    // convert to char
+                    result += (char)(grid[i, j].Value + '0');
                 }
             }
             return result;
