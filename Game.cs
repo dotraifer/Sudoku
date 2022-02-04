@@ -4,6 +4,10 @@ using System.Text;
 
 namespace Sudoku
 {
+
+    /// <summary>
+    /// this instance class reprosent the game we are in, and worl as the game manager
+    /// </summary>
     class Game
     {
         private Board _board;
@@ -20,12 +24,15 @@ namespace Sudoku
         /// </summary>
         /// <param name="board_strin_string">a string that reapreasent the board</param>
         /// <exception cref="UnpossibleBoardSizeExeption">will throw if we got illegal board size</exception>
+        /// <example>board in the size of 5</example>
+        /// <exception cref="InvalidCharException">will throw if we got into an invalid char in the board</exception>
+        /// <example>"5" if a 4on4 board</example>
         /// <returns>grid - the board as a matrix of integers </returns>
         public Cell[,] BuildGrid(string board_string)
         {
             // if board is empty, or that his length is illegal
             if (board_string.Length == 0 || Math.Sqrt(Math.Sqrt(board_string.Length)) % 1 != 0)
-                throw (new UnpossibleBoardSizeExeption("cant make a board out of " + board_string.Length + " numbers"));
+                throw new UnpossibleBoardSizeExeption(board_string.Length.ToString());
             else
             {
                 // the size of the board
@@ -42,7 +49,7 @@ namespace Sudoku
                         int value = (int)(board_string[arr_counter] - '0');
                         // if value is bigger then the biggest possible number
                         if (value < 0 || value > Globals.BoardSize)
-                            throw (new InvalidCharException("the char " + board_string[arr_counter] + " is illegal"));
+                            throw (new InvalidCharException(board_string[arr_counter].ToString()));
                         else
                         {
                             // put in grid
@@ -61,15 +68,18 @@ namespace Sudoku
         /// this function calls solve the board(calls the solvings methods), then return the result as a string
         /// </summary>
         /// <param name="board">the board to solve</param>
+        /// <exception cref="InvalidBoardException">will throw if the board is Invalid</exception>
+        /// <example>we got a board with same number on a row, col or box</example>
+        /// <exception cref="InsolubleBoardException">will throw if the board has no valid solution </exception>
         /// <returns>the string of the result</returns>
         public string SolveBoard(Board board)
         {
             // if the board is invalid
             if(!BoardUtils.IsBoardValid(board))
-                throw (new InvalidBoardException("board is not valid"));
+                throw (new InvalidBoardException(""));
             // if the board cannot be solved 
             if (!_board.SolveBoard(board) || !BoardUtils.IsBoardValid(board))
-                throw (new InsolubleBoardException("board is Insoluble"));
+                throw (new InsolubleBoardException(""));
             // return as string
             return ReturnToString(board.Cells);
         }

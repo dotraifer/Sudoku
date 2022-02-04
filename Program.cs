@@ -6,28 +6,35 @@ namespace Sudoku
 {
     class Program
     {
+        static private string path;
         [STAThread]
         static void Main(string[] args)
         {
             string board_string;
+            bool isFile;
             while (true)
             {
-                board_string = HandaleUserChoose();
+                (board_string, isFile) = HandaleUserChoose();
                 var watch = new System.Diagnostics.Stopwatch();
                 watch.Start();
-                string result_board = Solver.Solve(board_string);
-                watch.Stop();
-                PrintGame(board_string, result_board, watch.ElapsedMilliseconds);
+                if (board_string != null)
+                {
+                    string result_board = Solver.Solve(board_string);
+                    watch.Stop();
+                    if(isFile && result_board != null)
+                        WriteToFile(result_board);
+                    PrintGame(board_string, result_board, watch.ElapsedMilliseconds);
+                }
             }
         }
-
         /// <summary>
         /// static function that get choose from the user, than update the string by the string he put, and return the string
         /// </summary>
         /// <returns>the string we want to solve</returns>
-        public static string HandaleUserChoose()
+        public static (string, bool) HandaleUserChoose()
         {
             string board_string = null;
+            bool isFile = false;
             Gui.PrintManu();
             string manuChoose = Console.ReadLine();
             manuChoose = manuChoose.ToLower();
@@ -41,6 +48,7 @@ namespace Sudoku
                 // if he put from file
                 case "file":
                     board_string = ReadFromFile();
+                    isFile = true;
                     break;
                 // if he want to exit
                 case "exit":
@@ -53,7 +61,7 @@ namespace Sudoku
                     break;
 
             }
-            return board_string;
+            return (board_string, isFile);
         }
 
         /// <summary>
@@ -80,9 +88,11 @@ namespace Sudoku
         /// <returns>the string we got from the file, or null if we got into a problam</returns>
         public static string ReadFromFile()
         {
-            string path = null;
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "TXT files|*.txt";
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                // only txt files
+                Filter = "TXT files|*.txt"
+            };
             if (fileDialog.ShowDialog() == DialogResult.OK)
                 path = fileDialog.FileName;
             try {
@@ -105,6 +115,20 @@ namespace Sudoku
                 Console.WriteLine("unknown problem with file opening\n" + e);
             }
             return null;
+        }
+
+        /// <summary>
+        /// this function writes to the file the solution of the board, 2 lines under the first board
+        /// </summary>
+        /// <param name="resultBoard">the result of the board from the file</param>
+        public static void WriteToFile(string resultBoard)
+        {
+            using (StreamWriter sw = File.AppendText(path))
+            {
+                sw.WriteLine();
+                sw.WriteLine();
+                sw.WriteLine(resultBoard);
+            }
         }
     }
 }

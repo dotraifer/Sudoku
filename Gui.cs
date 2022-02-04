@@ -4,8 +4,17 @@ using System.Text;
 
 namespace Sudoku
 {
+
+    /// <summary>
+    /// static cclass that contain all the UI methods
+    /// </summary>
     public static class Gui
     {
+
+        /// <summary>
+        /// this function print a given board in pretty way
+        /// </summary>
+        /// <param name="board">thestring reprosent the board we would like to print</param>
         public static void PrintBoard(string board)
         {
             CalcMaximumSize();
@@ -27,6 +36,12 @@ namespace Sudoku
 
 
         }
+
+        /// <summary>
+        /// this function print the row with the numbers in the console
+        /// </summary>
+        /// <param name="board">the board numbers to pront</param>
+        /// <param name="board_counter">the number in the board to start printing from</param>
         public static void PrintNumbersRow(string board, ref int board_counter)
         {
             for (int k = 0; k <= Globals.BoardSize * 6; k++)
@@ -50,6 +65,10 @@ namespace Sudoku
             }
             Console.WriteLine();
         }
+
+        /// <summary>
+        /// print upeper border for every row
+        /// </summary>
         public static void PrintUpperBorder()
         {
             for (int k = 0; k <= Globals.BoardSize * 6; k++)
@@ -62,6 +81,10 @@ namespace Sudoku
             }
             Console.WriteLine();
         }
+        
+        /// <summary>
+        /// print an empty row in the board
+        /// </summary>
         public static void PrintEmptyRow()
         {
             for (int k = 0; k <= Globals.BoardSize * 6; k++)
@@ -81,10 +104,18 @@ namespace Sudoku
             }
             Console.WriteLine();
         }
+        
+        /// <summary>
+        /// calculate the biggest number possible in the print
+        /// </summary>
         public static void CalcMaximumSize()
         {
             Globals.BiggestNumberSize = Globals.BoardSize.ToString().Length;
         }
+
+        /// <summary>
+        /// print the user choosing manu
+        /// </summary>
         public static void PrintManu()
         {
             Console.WriteLine("\n*Welcome to the sudoku solver*");

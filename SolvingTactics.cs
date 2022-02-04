@@ -4,6 +4,10 @@ using System.Text;
 
 namespace Sudoku
 {
+
+   /// <summary>
+   /// static class that contain static methods for our board solving tactics
+   /// </summary>
    public static  class SolvingTactics
     {
 

@@ -4,6 +4,10 @@ using System.Text;
 
 namespace Sudoku
 {
+
+    /// <summary>
+    /// this instance class reprosent cell in the board- single slot
+    /// </summary>
     public class Cell
     {
         private int _value;
