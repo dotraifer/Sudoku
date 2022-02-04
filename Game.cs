@@ -6,7 +6,7 @@ namespace Sudoku
 {
 
     /// <summary>
-    /// this instance class reprosent the game we are in, and worl as the game manager
+    /// this instance class reprosent the game we are in, and work as the game manager
     /// </summary>
     class Game
     {

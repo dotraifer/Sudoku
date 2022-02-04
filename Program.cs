@@ -75,6 +75,7 @@ namespace Sudoku
         {
             if (AfterSolve != null)
             {
+                Console.WriteLine(AfterSolve);
                 Gui.PrintBoard(beforeSolve);
                 Gui.PrintBoard(AfterSolve);
                Console.WriteLine($"Execution Time: {timeToSolve} ms");
