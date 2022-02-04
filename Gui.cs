@@ -10,7 +10,7 @@ namespace Sudoku
     /// </summary>
     public static class Gui
     {
-
+        static int cellWidth = 6;
         /// <summary>
         /// this function print a given board in pretty way
         /// </summary>
@@ -44,16 +44,16 @@ namespace Sudoku
         /// <param name="board_counter">the number in the board to start printing from</param>
         public static void PrintNumbersRow(string board, ref int board_counter)
         {
-            for (int k = 0; k <= Globals.BoardSize * 6; k++)
+            for (int k = 0; k <= Globals.BoardSize * cellWidth; k++)
             {
-                if (k % 6 == 0)
+                if (k % cellWidth == 0)
                 {
-                    if ((k % (Globals.SmallBoxSize * 6) == 0))
+                    if ((k % (Globals.SmallBoxSize * cellWidth) == 0))
                         Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("|");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                else if ((k + 3) % 6 == 0)
+                else if ((k + cellWidth / 2) % cellWidth == 0)
                 {
                     Console.Write((int)(board[board_counter] - 48));
                     for (int j = 0; j < Globals.BiggestNumberSize - (int)(board[board_counter] - 48).ToString().Length; j++)
@@ -71,9 +71,9 @@ namespace Sudoku
         /// </summary>
         public static void PrintUpperBorder()
         {
-            for (int k = 0; k <= Globals.BoardSize * 6; k++)
+            for (int k = 0; k <= Globals.BoardSize * cellWidth; k++)
             {
-                if ((k + 3) % 6 == 0)
+                if ((k + cellWidth / 2) % cellWidth == 0)
                     for (int i = 0; i < Globals.BiggestNumberSize; i++)
                         Console.Write("-");
                 else
@@ -87,16 +87,16 @@ namespace Sudoku
         /// </summary>
         public static void PrintEmptyRow()
         {
-            for (int k = 0; k <= Globals.BoardSize * 6; k++)
+            for (int k = 0; k <= Globals.BoardSize * cellWidth; k++)
             {
-                if (k % 6 == 0)
+                if (k % cellWidth == 0)
                 {
-                    if (k % (6 * Globals.SmallBoxSize) == 0)
+                    if (k % (cellWidth * Globals.SmallBoxSize) == 0)
                         Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("|");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                else if ((k + 3) % 6 == 0)
+                else if ((k + cellWidth / 2) % cellWidth == 0)
                     for (int i = 0; i < Globals.BiggestNumberSize; i++)
                         Console.Write(" ");
                 else
