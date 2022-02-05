@@ -4,6 +4,10 @@ using System.Text;
 
 namespace Sudoku
 {
+
+    /// <summary>
+    /// this instance class reprosent cell in the board- single slot
+    /// </summary>
     public class Cell
     {
         private int _value;
@@ -32,9 +36,13 @@ namespace Sudoku
         }
         public Cell(int value, int XLocation, int YLocation)
         {
+            // the cell value
             this.Value = value;
+            // list pf the cell possible numbers
             this.PossibleNumbers = new List<int>();
+            // the cell x coordinate
             this.XLocation = XLocation;
+            // the cell y coordinate
             this.YLocation = YLocation;
 
         }
