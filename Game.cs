@@ -8,7 +8,7 @@ namespace Sudoku
     /// <summary>
     /// this instance class reprosent the game we are in, and work as the game manager
     /// </summary>
-    class Game
+    public class Game
     {
         private Board _board;
         public Game(string board_string)
@@ -28,15 +28,15 @@ namespace Sudoku
         /// <exception cref="InvalidCharException">will throw if we got into an invalid char in the board</exception>
         /// <example>"5" if a 4on4 board</example>
         /// <returns>grid - the board as a matrix of integers </returns>
-        public Cell[,] BuildGrid(string board_string)
+        public Cell[,] BuildGrid(string boardString)
         {
             // if board is empty, or that his length is illegal
-            if (board_string.Length == 0 || Math.Sqrt(Math.Sqrt(board_string.Length)) % 1 != 0)
-                throw new UnpossibleBoardSizeExeption(board_string.Length.ToString());
+            if (boardString.Length == 0 || Math.Sqrt(Math.Sqrt(boardString.Length)) % 1 != 0)
+                throw new UnpossibleBoardSizeExeption(boardString.Length.ToString());
             else
             {
                 // the size of the board
-                Globals.BoardSize = (int)Math.Sqrt(board_string.Length);
+                Globals.BoardSize = (int)Math.Sqrt(boardString.Length);
                 // the size of the smallbox
                 Globals.SmallBoxSize = (int)Math.Sqrt(Globals.BoardSize);
                 Cell[,] grid = new Cell[Globals.BoardSize, Globals.BoardSize];
@@ -46,10 +46,10 @@ namespace Sudoku
                     for (int j = 0; j < Globals.BoardSize; j++)
                     {
                         // from char to int
-                        int value = (int)(board_string[arr_counter] - '0');
+                        int value = (int)(boardString[arr_counter] - '0');
                         // if value is bigger then the biggest possible number
                         if (value < 0 || value > Globals.BoardSize)
-                            throw (new InvalidCharException(board_string[arr_counter].ToString()));
+                            throw (new InvalidCharException(boardString[arr_counter].ToString()));
                         else
                         {
                             // put in grid
