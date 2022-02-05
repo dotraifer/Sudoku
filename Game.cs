@@ -10,6 +10,7 @@ namespace Sudoku
     /// </summary>
     public class Game
     {
+        // contain a board
         private Board _board;
         public Game(string board_string)
         {
