@@ -4,17 +4,8 @@ using System.Text;
 
 namespace Sudoku
 {
-
-    /// <summary>
-    /// static cclass that contain all the UI methods
-    /// </summary>
     public static class Gui
     {
-        static readonly int cellWidth = 6;
-        /// <summary>
-        /// this function print a given board in pretty way
-        /// </summary>
-        /// <param name="board">thestring reprosent the board we would like to print</param>
         public static void PrintBoard(string board)
         {
             CalcMaximumSize();
@@ -36,24 +27,18 @@ namespace Sudoku
 
 
         }
-
-        /// <summary>
-        /// this function print the row with the numbers in the console
-        /// </summary>
-        /// <param name="board">the board numbers to pront</param>
-        /// <param name="board_counter">the number in the board to start printing from</param>
         public static void PrintNumbersRow(string board, ref int board_counter)
         {
-            for (int k = 0; k <= Globals.BoardSize * cellWidth; k++)
+            for (int k = 0; k <= Globals.BoardSize * 6; k++)
             {
-                if (k % cellWidth == 0)
+                if (k % 6 == 0)
                 {
-                    if ((k % (Globals.SmallBoxSize * cellWidth) == 0))
+                    if ((k % (Globals.SmallBoxSize * 6) == 0))
                         Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("|");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                else if ((k + cellWidth / 2) % cellWidth == 0)
+                else if ((k + 3) % 6 == 0)
                 {
                     Console.Write((int)(board[board_counter] - 48));
                     for (int j = 0; j < Globals.BiggestNumberSize - (int)(board[board_counter] - 48).ToString().Length; j++)
@@ -65,15 +50,11 @@ namespace Sudoku
             }
             Console.WriteLine();
         }
-
-        /// <summary>
-        /// print upeper border for every row
-        /// </summary>
         public static void PrintUpperBorder()
         {
-            for (int k = 0; k <= Globals.BoardSize * cellWidth; k++)
+            for (int k = 0; k <= Globals.BoardSize * 6; k++)
             {
-                if ((k + cellWidth / 2) % cellWidth == 0)
+                if ((k + 3) % 6 == 0)
                     for (int i = 0; i < Globals.BiggestNumberSize; i++)
                         Console.Write("-");
                 else
@@ -81,22 +62,18 @@ namespace Sudoku
             }
             Console.WriteLine();
         }
-        
-        /// <summary>
-        /// print an empty row in the board
-        /// </summary>
         public static void PrintEmptyRow()
         {
-            for (int k = 0; k <= Globals.BoardSize * cellWidth; k++)
+            for (int k = 0; k <= Globals.BoardSize * 6; k++)
             {
-                if (k % cellWidth == 0)
+                if (k % 6 == 0)
                 {
-                    if (k % (cellWidth * Globals.SmallBoxSize) == 0)
+                    if (k % (6 * Globals.SmallBoxSize) == 0)
                         Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("|");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                else if ((k + cellWidth / 2) % cellWidth == 0)
+                else if ((k + 3) % 6 == 0)
                     for (int i = 0; i < Globals.BiggestNumberSize; i++)
                         Console.Write(" ");
                 else
@@ -104,18 +81,10 @@ namespace Sudoku
             }
             Console.WriteLine();
         }
-        
-        /// <summary>
-        /// calculate the biggest number possible in the print
-        /// </summary>
         public static void CalcMaximumSize()
         {
             Globals.BiggestNumberSize = Globals.BoardSize.ToString().Length;
         }
-
-        /// <summary>
-        /// print the user choosing manu
-        /// </summary>
         public static void PrintManu()
         {
             Console.WriteLine("\n*Welcome to the sudoku solver*");
